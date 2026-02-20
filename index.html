@@ -6,138 +6,143 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --tg-color: #0088cc; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; padding-bottom: 30px; }
-        
-        /* Карточка приложения */
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
         .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 420px; margin: auto; }
         
-        /* Красивая шапка с фоном */
         .header-img { 
-            width: 100%; height: 200px; 
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), 
-                        url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg?t=st=1708436000~exp=1708439600~hmac=8e6b1d8f') center/cover;
+            width: 100%; height: 180px; 
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), 
+                        url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg') center/cover;
             display: flex; align-items: flex-end; padding: 20px; box-sizing: border-box;
         }
-        
-        .header-title { color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-size: 24px; font-weight: 900; letter-spacing: 1px; }
+        .header-title { color: white; font-size: 24px; font-weight: 900; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
 
-        .content { padding: 25px; }
-        label { display: block; margin-top: 15px; font-size: 12px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        
+        /* ЦВЕТНЫЕ МЕТКИ */
+        .lbl-from { color: #ff5722; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: 10px; }
+        .lbl-to { color: #4caf50; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: 15px; }
         
         select, input { 
-            width: 100%; padding: 14px; margin-top: 6px; border-radius: 12px; 
-            border: 1px solid #eee; background: #f9f9f9; font-size: 16px; font-weight: 600;
-            box-sizing: border-box; outline: none; transition: 0.3s;
+            width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; 
+            border: 2px solid #eee; font-size: 16px; font-weight: bold; outline: none;
         }
-        select:focus, input:focus { border-color: var(--tg-color); background: #fff; }
 
-        /* Блок цены */
+        /* Раскрашиваем варианты выбора */
+        .opt-kedr { color: #1976d2; }
+        .opt-ost { color: #7b1fa2; }
+        .opt-pud { color: #388e3c; }
+        .opt-lush { color: #fbc02d; }
+        .opt-kul { color: #e64a19; }
+        .opt-kal { color: #d32f2f; }
+
         .price-container { 
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); 
-            color: #1565c0; padding: 20px; border-radius: 18px; text-align: center; 
-            margin-top: 25px; border: 1px solid #90caf9; 
+            background: linear-gradient(135deg, #64b5f6 0%, #2196f3 100%); 
+            color: white; padding: 15px; border-radius: 18px; text-align: center; margin-top: 20px;
         }
-        .price-label { font-size: 14px; font-weight: 600; opacity: 0.8; }
-        .price-value { font-size: 32px; font-weight: 900; display: block; margin-top: 5px; }
+        .price-value { font-size: 30px; font-weight: 900; }
 
         .btn { 
-            background: var(--tg-color); color: white; border: none; width: 100%; 
-            padding: 20px; border-radius: 18px; font-size: 18px; font-weight: bold; 
-            margin-top: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
+            background: #ff9800; color: white; border: none; width: 100%; 
+            padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; 
+            margin-top: 15px; box-shadow: 0 4px 15px rgba(255,152,0,0.4);
         }
-        .btn:active { transform: scale(0.97); }
 
-        .dev-box { text-align: center; margin-top: 30px; font-size: 11px; color: #bbb; font-weight: 600; }
-        .dev-box b { color: #888; }
+        .dev-box { text-align: center; margin-top: 20px; font-size: 10px; color: #aaa; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="header-img">
-            <div class="header-title">🚕 ПОПУТЧИК 2026</div>
-        </div>
-        
+        <div class="header-img"><div class="header-title">🚕 ПОПУТЧИК 2026</div></div>
         <div class="content">
-            <label>📍 ОТКУДА ПРИЕХАТЬ:</label>
-            <select id="f" onchange="calc()">
-                <option>КЕДРОВЫЙ</option><option>ОСТАНИНО</option><option>ПУДИНО</option>
-                <option>ЛУШНИКОВО</option><option>КУЛАЦКИЙ</option><option>КАЛИНИНСК</option>
-                <option>АЭРОПОРТ</option><option>ДАЧИ</option>
+            <div class="lbl-from">📍 ОТКУДА (Цветной выбор):</div>
+            <select id="f" onchange="calc()" style="border-color: #ff572222;">
+                <option class="opt-kedr">🌲 КЕДРОВЫЙ</option>
+                <option class="opt-ost">🏘️ ОСТАНИНО</option>
+                <option class="opt-pud">🏡 ПУДИНО</option>
+                <option class="opt-lush">🌾 ЛУШНИКОВО</option>
+                <option class="opt-kul">🏗️ КУЛАЦКИЙ</option>
+                <option class="opt-kal">🏠 КАЛИНИНСК</option>
+                <option class="opt-kedr">✈️ АЭРОПОРТ</option>
+                <option class="opt-lush">🍏 ДАЧИ</option>
             </select>
             
-            <label>🏁 КУДА ЕДЕМ:</label>
-            <select id="t" onchange="calc()">
-                <option>ОСТАНИНО</option><option>КЕДРОВЫЙ</option><option>ПУДИНО</option>
-                <option>ЛУШНИКОВО</option><option>КУЛАЦКИЙ</option><option>КАЛИНИНСК</option>
-                <option>АЭРОПОРТ</option><option>ДАЧИ</option>
+            <div class="lbl-to">🏁 КУДА (Цветной выбор):</div>
+            <select id="t" onchange="calc()" style="border-color: #4caf5022;">
+                <option class="opt-ost">🏘️ ОСТАНИНО</option>
+                <option class="opt-kedr">🌲 КЕДРОВЫЙ</option>
+                <option class="opt-pud">🏡 ПУДИНО</option>
+                <option class="opt-lush">🌾 ЛУШНИКОВО</option>
+                <option class="opt-kul">🏗️ КУЛАЦКИЙ</option>
+                <option class="opt-kal">🏠 КАЛИНИНСК</option>
+                <option class="opt-kedr">✈️ АЭРОПОРТ</option>
+                <option class="opt-lush">🍏 ДАЧИ</option>
             </select>
             
-            <label>📅 ВРЕМЯ ПОДАЧИ:</label>
-            <input type="time" id="tm" value="12:00" onchange="calc()">
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <div style="flex:1;"><label style="font-size:10px; font-weight:bold;">📅 ДАТА</label><select id="date_select" onchange="calc()"></select></div>
+                <div style="flex:1;"><label style="font-size:10px; font-weight:bold;">⏰ ВРЕМЯ</label><input type="time" id="tm" value="12:00" onchange="calc()"></div>
+            </div>
 
             <div class="price-container">
-                <span class="price-label">СТОИМОСТЬ ПОЕЗДКИ</span>
-                <span class="price-value" id="total">300р</span>
+                <div style="font-size:12px; font-weight:bold; opacity:0.9;">ИТОГО К ОПЛАТЕ:</div>
+                <div class="price-value" id="total">300р</div>
             </div>
 
-            <button class="btn" onclick="send()">ЗАБРОНИРОВАТЬ</button>
-
-            <div class="dev-box">
-                РАЗРАБОТКА: <b>Я И ТЫ (GEMINI)</b> 🤝
-            </div>
+            <button class="btn" onclick="send()">🔥 ЗАБРОНИРОВАТЬ</button>
+            <div class="dev-box">РАЗРАБОТКА:<br><b>КОЛОГРИВОВ ЕВГЕНИЙ ЕВГЕНЬЕВИЧ И GEMINI</b></div>
         </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#ffffff';
-
+        
         const PRICES = {
-            "КЕДРОВЫЙ-ОСТАНИНО": 300, "ОСТАНИНО-КЕДРОВЫЙ": 300,
-            "КЕДРОВЫЙ-ПУДИНО": 350, "ПУДИНО-КЕДРОВЫЙ": 350,
-            "КЕДРОВЫЙ-ЛУШНИКОВО": 400, "ЛУШНИКОВО-КЕДРОВЫЙ": 400,
-            "КЕДРОВЫЙ-КУЛАЦКИЙ": 450, "КУЛАЦКИЙ-КЕДРОВЫЙ": 450,
-            "КЕДРОВЫЙ-КАЛИНИНСК": 500, "КАЛИНИНСК-КЕДРОВЫЙ": 500,
-            "КЕДРОВЫЙ-КЕДРОВЫЙ": 200,
-            "КЕДРОВЫЙ-АЭРОПОРТ": 400, "АЭРОПОРТ-КЕДРОВЫЙ": 400,
-            "КЕДРОВЫЙ-ДАЧИ": 400, "ДАЧИ-КЕДРОВЫЙ": 400,
-            "ПУДИНО-ЛУШНИКОВО": 300, "ЛУШНИКОВО-ПУДИНО": 300,
-            "ПУДИНО-КАЛИНИНСК": 400, "КАЛИНИНСК-ПУДИНО": 400
+            "🌲 КЕДРОВЫЙ-🏘️ ОСТАНИНО": 300, "🏘️ ОСТАНИНО-🌲 КЕДРОВЫЙ": 300,
+            "🌲 КЕДРОВЫЙ-🏡 ПУДИНО": 350, "🏡 ПУДИНО-🌲 КЕДРОВЫЙ": 350,
+            "🌲 КЕДРОВЫЙ-🌾 ЛУШНИКОВО": 400, "🌾 ЛУШНИКОВО-🌲 КЕДРОВЫЙ": 400,
+            "🌲 КЕДРОВЫЙ-🏗️ КУЛАЦКИЙ": 450, "🏗️ КУЛАЦКИЙ-🌲 КЕДРОВЫЙ": 450,
+            "🌲 КЕДРОВЫЙ-🏠 КАЛИНИНСК": 500, "🏠 КАЛИНИНСК-🌲 КЕДРОВЫЙ": 500,
+            "🌲 КЕДРОВЫЙ-🌲 КЕДРОВЫЙ": 200,
+            "🌲 КЕДРОВЫЙ-✈️ АЭРОПОРТ": 400, "✈️ АЭРОПОРТ-🌲 КЕДРОВЫЙ": 400,
+            "🌲 КЕДРОВЫЙ-🍏 ДАЧИ": 400, "🍏 ДАЧИ-🌲 КЕДРОВЫЙ": 400,
+            "🏡 ПУДИНО-🌾 ЛУШНИКОВО": 300, "🌾 ЛУШНИКОВО-🏡 ПУДИНО": 300,
+            "🏡 ПУДИНО-🏠 КАЛИНИНСК": 400, "🏠 КАЛИНИНСК-🏡 ПУДИНО": 400
         };
 
-        function calc() {
-            let from = document.getElementById('f').value;
-            let to = document.getElementById('t').value;
-            let time = document.getElementById('tm').value;
-            
-            let key = from + "-" + to;
-            let base = PRICES[key] || 400; 
-            
-            let hour = parseInt(time.split(':')[0]);
-            let min = parseInt(time.split(':')[1]);
-            
-            let isNight = false;
-            // Ночной тариф 22:00 - 08:08
-            if (hour >= 22 || hour < 8 || (hour === 8 && min <= 8)) {
-                isNight = true;
-                base *= 2;
+        function fillDates() {
+            const s = document.getElementById('date_select');
+            for (let i = 0; i < 3; i++) {
+                let d = new Date(); d.setDate(d.getDate() + i);
+                let txt = (i===0?"Сегодня ":(i===1?"Завтра ":"")) + d.toLocaleDateString('ru-RU',{month:'short',day:'numeric'});
+                s.add(new Option(txt, d.toLocaleDateString('ru-RU')));
             }
+        }
 
+        function calc() {
+            let f = document.getElementById('f').value;
+            let t = document.getElementById('t').value;
+            let tm = document.getElementById('tm').value;
+            let key = f + "-" + t;
+            let base = PRICES[key] || 400;
+            let h = parseInt(tm.split(':')[0]);
+            let m = parseInt(tm.split(':')[1]);
+            let isNight = (h >= 22 || h < 8 || (h === 8 && m <= 8));
+            if (isNight) base *= 2;
             document.getElementById('total').innerText = base + "р" + (isNight ? " 🌙" : " ☀️");
         }
 
         function send() {
-            let data = {
+            tg.sendData(JSON.stringify({
                 from: document.getElementById('f').value,
                 to: document.getElementById('t').value,
+                date: document.getElementById('date_select').value,
                 time: document.getElementById('tm').value,
                 price: document.getElementById('total').innerText
-            };
-            tg.sendData(JSON.stringify(data));
+            }));
         }
-        
-        calc();
+        fillDates(); calc();
     </script>
 </body>
 </html>
