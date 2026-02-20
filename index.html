@@ -4,158 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main: #0088cc; --bg: #f4f7f9; --text: #2c3e50; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; padding: 12px; color: var(--text); }
-        .card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 420px; margin: auto; border: 1px solid rgba(255,255,255,0.3); }
+        :root { --tg-color: #0088cc; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; padding-bottom: 30px; }
         
-        .header { width: 100%; height: 180px; background: url('https://s.auto.drom.ru/i24219/pubs/4/62534/2807086.jpg') center/cover; position: relative; }
-        .header-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); display: flex; align-items: flex-end; padding: 20px; }
-        .header-title { color: white; margin: 0; font-size: 24px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-
-        .content { padding: 20px; }
-        .section-title { font-size: 11px; font-weight: 800; color: #95a5a6; text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 0 8px 5px; display: flex; align-items: center; gap: 5px; }
+        /* Карточка приложения */
+        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 420px; margin: auto; }
         
-        .input-group { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; transition: 0.3s; }
-        .input-group:focus-within { border-color: var(--main); background: white; box-shadow: 0 0 0 3px rgba(0,136,204,0.1); }
-        .input-group i { color: var(--main); font-size: 18px; width: 20px; text-align: center; }
-        
-        select, input { border: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; outline: none; color: var(--text); cursor: pointer; }
-        
-        .row { display: flex; gap: 12px; margin-bottom: 5px; }
-        .flex-1 { flex: 1; }
-
-        /* Стиль итоговой кнопки */
-        .order-btn { 
-            background: var(--main); color: white; border: none; width: 100%; padding: 18px; 
-            border-radius: 18px; font-size: 18px; font-weight: 800; cursor: pointer; 
-            margin-top: 25px; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 8px 20px rgba(0,136,204,0.3); transition: 0.3s;
+        /* Красивая шапка с фоном */
+        .header-img { 
+            width: 100%; height: 200px; 
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), 
+                        url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg?t=st=1708436000~exp=1708439600~hmac=8e6b1d8f') center/cover;
+            display: flex; align-items: flex-end; padding: 20px; box-sizing: border-box;
         }
-        .order-btn:active { transform: scale(0.96); }
-        .price-badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 10px; font-size: 20px; }
+        
+        .header-title { color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-size: 24px; font-weight: 900; letter-spacing: 1px; }
 
-        .hint { font-size: 12px; color: #7f8c8d; text-align: center; margin-top: 15px; }
+        .content { padding: 25px; }
+        label { display: block; margin-top: 15px; font-size: 12px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        
+        select, input { 
+            width: 100%; padding: 14px; margin-top: 6px; border-radius: 12px; 
+            border: 1px solid #eee; background: #f9f9f9; font-size: 16px; font-weight: 600;
+            box-sizing: border-box; outline: none; transition: 0.3s;
+        }
+        select:focus, input:focus { border-color: var(--tg-color); background: #fff; }
+
+        /* Блок цены */
+        .price-container { 
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); 
+            color: #1565c0; padding: 20px; border-radius: 18px; text-align: center; 
+            margin-top: 25px; border: 1px solid #90caf9; 
+        }
+        .price-label { font-size: 14px; font-weight: 600; opacity: 0.8; }
+        .price-value { font-size: 32px; font-weight: 900; display: block; margin-top: 5px; }
+
+        .btn { 
+            background: var(--tg-color); color: white; border: none; width: 100%; 
+            padding: 20px; border-radius: 18px; font-size: 18px; font-weight: bold; 
+            margin-top: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
+        }
+        .btn:active { transform: scale(0.97); }
+
+        .dev-box { text-align: center; margin-top: 30px; font-size: 11px; color: #bbb; font-weight: 600; }
+        .dev-box b { color: #888; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="header">
-            <div class="header-overlay">
-                <h1 class="header-title">ПОПУТЧИК 2026</h1>
-            </div>
+        <div class="header-img">
+            <div class="header-title">🚕 ПОПУТЧИК 2026</div>
         </div>
-
+        
         <div class="content">
-            <div class="section-title"><i class="fas fa-route"></i> Маршрут</div>
-            <div class="row">
-                <div class="flex-1">
-                    <div class="input-group">
-                        <i class="fas fa-location-dot"></i>
-                        <select id="f" onchange="calc()"><option>КЕДРОВЫЙ</option><option>КАЛИНИНСК</option><option>ЛУШНИКОВО</option><option>ПУДИНО</option><option>ОСТАНИНО</option></select>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <div class="input-group">
-                        <i class="fas fa-flag-checkered"></i>
-                        <select id="t" onchange="calc()"><option>КАЛИНИНСК</option><option>КЕДРОВЫЙ</option><option>ЛУШНИКОВО</option><option>ПУДИНО</option><option>ОСТАНИНО</option></select>
-                    </div>
-                </div>
+            <label>📍 ОТКУДА ПРИЕХАТЬ:</label>
+            <select id="f" onchange="calc()">
+                <option>КЕДРОВЫЙ</option><option>ОСТАНИНО</option><option>ПУДИНО</option>
+                <option>ЛУШНИКОВО</option><option>КУЛАЦКИЙ</option><option>КАЛИНИНСК</option>
+                <option>АЭРОПОРТ</option><option>ДАЧИ</option>
+            </select>
+            
+            <label>🏁 КУДА ЕДЕМ:</label>
+            <select id="t" onchange="calc()">
+                <option>ОСТАНИНО</option><option>КЕДРОВЫЙ</option><option>ПУДИНО</option>
+                <option>ЛУШНИКОВО</option><option>КУЛАЦКИЙ</option><option>КАЛИНИНСК</option>
+                <option>АЭРОПОРТ</option><option>ДАЧИ</option>
+            </select>
+            
+            <label>📅 ВРЕМЯ ПОДАЧИ:</label>
+            <input type="time" id="tm" value="12:00" onchange="calc()">
+
+            <div class="price-container">
+                <span class="price-label">СТОИМОСТЬ ПОЕЗДКИ</span>
+                <span class="price-value" id="total">300р</span>
             </div>
 
-            <div class="section-title"><i class="fas fa-clock"></i> Когда едем</div>
-            <div class="row">
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-calendar-day"></i><input type="text" id="d" readonly></div>
-                </div>
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-stopwatch"></i><input type="time" id="tm" onchange="calc()"></div>
-                </div>
-            </div>
+            <button class="btn" onclick="send()">ЗАБРОНИРОВАТЬ</button>
 
-            <div class="section-title"><i class="fas fa-users"></i> Пассажиры</div>
-            <div class="row">
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-user"></i><select id="s" onchange="calc()"><option value="1">1 чел</option><option value="2">2 чел</option><option value="3">3 чел</option><option value="4">4 чел</option></select></div>
-                </div>
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-child"></i><select id="k" onchange="calc()"><option value="Нет">Без детей</option><option value="Да">С детьми</option></select></div>
-                </div>
+            <div class="dev-box">
+                РАЗРАБОТКА: <b>Я И ТЫ (GEMINI)</b> 🤝
             </div>
-
-            <div class="section-title"><i class="fas fa-plus-circle"></i> Опции</div>
-            <div class="row">
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-house-user"></i><select id="st" onchange="calc()"><option value="Нет">Остановка</option><option value="Да">До двери</option></select></div>
-                </div>
-                <div class="flex-1">
-                    <div class="input-group"><i class="fas fa-suitcase"></i><select id="l" onchange="calc()"><option value="0">Без багажа</option><option value="100">С багажом</option></select></div>
-                </div>
-            </div>
-
-            <button class="order-btn" onclick="sendOrder()">
-                <span>ЗАКАЗАТЬ ГРАНТУ</span>
-                <span class="price-badge" id="display_price">400₽</span>
-            </button>
-            <p class="hint">Водитель свяжется с вами сразу после заказа</p>
         </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.MainButton.hide();
+        tg.headerColor = '#ffffff';
 
-        const FARES = {"КЕДРОВЫЙ": 0, "КАЛИНИНСК": 400, "ЛУШНИКОВО": 350, "ПУДИНО": 300, "ОСТАНИНО": 300};
+        const PRICES = {
+            "КЕДРОВЫЙ-ОСТАНИНО": 300, "ОСТАНИНО-КЕДРОВЫЙ": 300,
+            "КЕДРОВЫЙ-ПУДИНО": 350, "ПУДИНО-КЕДРОВЫЙ": 350,
+            "КЕДРОВЫЙ-ЛУШНИКОВО": 400, "ЛУШНИКОВО-КЕДРОВЫЙ": 400,
+            "КЕДРОВЫЙ-КУЛАЦКИЙ": 450, "КУЛАЦКИЙ-КЕДРОВЫЙ": 450,
+            "КЕДРОВЫЙ-КАЛИНИНСК": 500, "КАЛИНИНСК-КЕДРОВЫЙ": 500,
+            "КЕДРОВЫЙ-КЕДРОВЫЙ": 200,
+            "КЕДРОВЫЙ-АЭРОПОРТ": 400, "АЭРОПОРТ-КЕДРОВЫЙ": 400,
+            "КЕДРОВЫЙ-ДАЧИ": 400, "ДАЧИ-КЕДРОВЫЙ": 400,
+            "ПУДИНО-ЛУШНИКОВО": 300, "ЛУШНИКОВО-ПУДИНО": 300,
+            "ПУДИНО-КАЛИНИНСК": 400, "КАЛИНИНСК-ПУДИНО": 400
+        };
 
         function calc() {
-            const f = document.getElementById('f').value;
-            const t = document.getElementById('t').value;
-            const tm = document.getElementById('tm').value;
-            const st = document.getElementById('st').value;
-            const l = parseInt(document.getElementById('l').value);
-
-            let base = Math.max(FARES[f] || 0, FARES[t] || 0) || 350;
+            let from = document.getElementById('f').value;
+            let to = document.getElementById('t').value;
+            let time = document.getElementById('tm').value;
             
-            // Ночной тариф (22:00 - 08:00)
-            const hour = parseInt(tm.split(':')[0]);
-            if (hour >= 22 || hour < 8) base *= 2;
-
-            let total = base + (st === "Да" ? 50 : 0) + l;
-            document.getElementById('display_price').innerText = total + "₽";
-            return total;
-        }
-
-        // Инициализация
-        const now = new Date();
-        document.getElementById('d').value = now.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit'});
-        document.getElementById('tm').value = String(now.getHours()).padStart(2,'0') + ":" + String(now.getMinutes()).padStart(2,'0');
-        calc();
-
-        function sendOrder() {
-            const tm = document.getElementById('tm').value;
-            const [h, m] = tm.split(':').map(Number);
-            const orderTime = new Date(); orderTime.setHours(h, m, 0, 0);
-
-            if (orderTime < new Date()) {
-                tg.showAlert("Нельзя заказать машину на прошедшее время! ❌");
-                return;
+            let key = from + "-" + to;
+            let base = PRICES[key] || 400; 
+            
+            let hour = parseInt(time.split(':')[0]);
+            let min = parseInt(time.split(':')[1]);
+            
+            let isNight = false;
+            // Ночной тариф 22:00 - 08:08
+            if (hour >= 22 || hour < 8 || (hour === 8 && min <= 8)) {
+                isNight = true;
+                base *= 2;
             }
 
+            document.getElementById('total').innerText = base + "р" + (isNight ? " 🌙" : " ☀️");
+        }
+
+        function send() {
             let data = {
-                f: document.getElementById('f').value,
-                t: document.getElementById('t').value,
-                d: document.getElementById('d').value,
-                tm: tm,
-                s: document.getElementById('s').value,
-                k: document.getElementById('k').value,
-                st: document.getElementById('st').value,
-                l: document.getElementById('l').value,
-                p: document.getElementById('display_price').innerText
+                from: document.getElementById('f').value,
+                to: document.getElementById('t').value,
+                time: document.getElementById('tm').value,
+                price: document.getElementById('total').innerText
             };
             tg.sendData(JSON.stringify(data));
         }
+        
+        calc();
     </script>
 </body>
 </html>
