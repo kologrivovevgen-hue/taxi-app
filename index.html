@@ -77,21 +77,19 @@
         document.getElementById('pr').innerText = base + "р" + (n ? " 🌙" : " ☀️");
     }
 
-    // В функции send() добавь отправку данных о детях:
-    function send() {
-        let kidsText = document.getElementById('kids').checked ? "Да" : "Нет";
-        // Добавь 'kids: kidsText' в JSON.stringify:
-        tg.sendData(JSON.stringify({
-            from: document.getElementById('f').value, 
-            to: document.getElementById('t').value,
-            date: document.getElementById('ds').options[document.getElementById('ds').selectedIndex].text, 
-            time: document.getElementById('tm').value,
-            cargo: document.getElementById('cargo').checked ? "Да" : "Нет", 
-            stops: document.getElementById('stops').value,
-            kids: document.getElementById('kids').checked ? "Да" : "Нет",
-            price: document.getElementById('pr').innerText
-        }));
-    }
+ function send() {
+    let kidsText = document.getElementById('kids').checked ? "Да" : "Нет"; // Создаем текст
+    tg.sendData(JSON.stringify({
+        from: document.getElementById('f').value, 
+        to: document.getElementById('t').value,
+        date: document.getElementById('ds').options[document.getElementById('ds').selectedIndex].text, 
+        time: document.getElementById('tm').value,
+        cargo: document.getElementById('cargo').checked ? "Да" : "Нет", 
+        stops: document.getElementById('stops').value,
+        kids: kidsText, // ДОБАВИЛИ ЭТУ СТРОКУ
+        price: document.getElementById('pr').innerText
+    }));
+}
 </script>
 
             <div class="price-box" id="pr">300р</div>
