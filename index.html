@@ -81,16 +81,19 @@
             document.getElementById('tm').value = String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0');
         }
 
-        function calc() {
-            let f = document.getElementById('f').value, t = document.getElementById('t').value;
-            let base = P[f+"-"+t] || 400;
-            let h = parseInt(document.getElementById('tm').value.split(':')[0]);
-            if(h >= 22 || h < 8) base *= 2;
-            if(document.getElementById('cargo').checked) base += 50;
-            if(document.getElementById('kids').checked) base += 50; // +50р за детей
-            base += (parseInt(document.getElementById('stops').value) * 50);
-            document.getElementById('pr').innerText = base + "р";
-        }
+       function calc() {
+    let f = document.getElementById('f').value, t = document.getElementById('t').value;
+    let base = P[f + "-" + t] || 400;
+    
+    let h = parseInt(document.getElementById('tm').value.split(':')[0]);
+    if (h >= 22 || h < 8) base *= 2; // Ночной тариф
+
+    if (document.getElementById('cargo').checked) base += 50;
+    if (document.getElementById('kids').checked) base += 50; // ВОТ ЭТО ПРИБАВЛЯЕТ 50р ЗА ДЕТЕЙ
+    
+    base += (parseInt(document.getElementById('stops').value) * 50);
+    document.getElementById('pr').innerText = base + "р";
+}
 
         function send() {
             tg.sendData(JSON.stringify({
