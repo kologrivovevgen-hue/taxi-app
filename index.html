@@ -88,7 +88,7 @@
             time: document.getElementById('tm').value,
             cargo: document.getElementById('cargo').checked ? "Да" : "Нет", 
             stops: document.getElementById('stops').value,
-            kids: kidsText, // Вот это добавили
+            kids: document.getElementById('kids').checked ? "Да" : "Нет",
             price: document.getElementById('pr').innerText
         }));
     }
