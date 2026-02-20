@@ -10,22 +10,12 @@
         .header { height: 160px; background: url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg') center/cover; position: relative; }
         .header-text { position: absolute; bottom: 15px; left: 20px; color: white; font-size: 22px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .content { padding: 20px; }
-        
-        /* ЦВЕТНЫЕ ПОЛЯ */
         .lbl { font-size: 11px; font-weight: 800; margin-top: 15px; text-transform: uppercase; }
         .from-lbl { color: #e91e63; }
         .to-lbl { color: #4caf50; }
-        
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: 2px solid #f0f0f0; font-size: 16px; font-weight: bold; outline: none; }
-        
-        /* РАСКРАСКА ГОРОДОВ */
-        .c-kedr { color: #1e88e5; }   /* Синий */
-        .c-ost { color: #8e24aa; }    /* Фиолетовый */
-        .c-pud { color: #43a047; }    /* Зеленый */
-        .c-lush { color: #fb8c00; }   /* Оранжевый */
-        .c-kal { color: #e53935; }    /* Красный */
-        .c-kul { color: #5d4037; }    /* Коричневый */
-
+        .c-kedr { color: #1e88e5; } .c-ost { color: #8e24aa; } .c-pud { color: #43a047; } 
+        .c-lush { color: #fb8c00; } .c-kal { color: #e53935; } .c-kul { color: #5d4037; }
         .price-box { background: linear-gradient(135deg, #2196f3, #00bcd4); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-size: 28px; font-weight: 900; }
         .btn { background: #ff9800; color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         .dev { text-align: center; margin-top: 20px; font-size: 10px; color: #aaa; }
@@ -37,56 +27,34 @@
         <div class="content">
             <div class="lbl from-lbl">📍 ОТКУДА ПРИЕХАТЬ:</div>
             <select id="f" onchange="calc()">
-                <option class="c-kedr">🌲 КЕДРОВЫЙ</option>
-                <option class="c-ost">🏘️ ОСТАНИНО</option>
-                <option class="c-pud">🏡 ПУДИНО</option>
-                <option class="c-lush">🌾 ЛУШНИКОВО</option>
-                <option class="c-kul">🏗️ КУЛАЦКИЙ</option>
-                <option class="c-kal">🏠 КАЛИНИНСК</option>
-                <option class="c-kedr">✈️ АЭРОПОРТ</option>
-                <option class="c-lush">🍏 ДАЧИ</option>
+                <option class="c-kedr">🌲 КЕДРОВЫЙ</option><option class="c-ost">🏘️ ОСТАНИНО</option><option class="c-pud">🏡 ПУДИНО</option><option class="c-lush">🌾 ЛУШНИКОВО</option><option class="c-kul">🏗️ КУЛАЦКИЙ</option><option class="c-kal">🏠 КАЛИНИНСК</option><option class="c-kedr">✈️ АЭРОПОРТ</option><option class="c-lush">🍏 ДАЧИ</option>
             </select>
-            
             <div class="lbl to-lbl">🏁 КУДА ЕДЕМ:</div>
             <select id="t" onchange="calc()">
-                <option class="c-ost">🏘️ ОСТАНИНО</option>
-                <option class="c-kedr">🌲 КЕДРОВЫЙ</option>
-                <option class="c-pud">🏡 ПУДИНО</option>
-                <option class="c-lush">🌾 ЛУШНИКОВО</option>
-                <option class="c-kul">🏗️ КУЛАЦКИЙ</option>
-                <option class="c-kal">🏠 КАЛИНИНСК</option>
-                <option class="c-kedr">✈️ АЭРОПОРТ</option>
-                <option class="c-lush">🍏 ДАЧИ</option>
+                <option class="c-ost">🏘️ ОСТАНИНО</option><option class="c-kedr">🌲 КЕДРОВЫЙ</option><option class="c-pud">🏡 ПУДИНО</option><option class="c-lush">🌾 ЛУШНИКОВО</option><option class="c-kul">🏗️ КУЛАЦКИЙ</option><option class="c-kal">🏠 КАЛИНИНСК</option><option class="c-kedr">✈️ АЭРОПОРТ</option><option class="c-lush">🍏 ДАЧИ</option>
             </select>
-            
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <div style="flex:1.2"><label class="lbl">📅 ДАТА</label><select id="ds" onchange="calc()"></select></div>
                 <div style="flex:0.8"><label class="lbl">⏰ ВРЕМЯ</label><input type="time" id="tm" value="12:00" onchange="calc()"></div>
             </div>
-
             <div class="price-box" id="pr">300р</div>
             <button class="btn" onclick="send()">ПОДТВЕРДИТЬ</button>
             <div class="dev">РАЗРАБОТКА:<br><b>КОЛОГРИВОВ ЕВГЕНИЙ ЕВГЕНЬЕВИЧ И GEMINI</b></div>
         </div>
     </div>
-
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-
+        let tg = window.Telegram.WebApp; tg.expand();
         const P = {
             "🌲 КЕДРОВЫЙ-🏘️ ОСТАНИНО": 300, "🏘️ ОСТАНИНО-🌲 КЕДРОВЫЙ": 300,
             "🌲 КЕДРОВЫЙ-🏡 ПУДИНО": 350, "🏡 ПУДИНО-🌲 КЕДРОВЫЙ": 350,
             "🌲 КЕДРОВЫЙ-🌾 ЛУШНИКОВО": 400, "🌾 ЛУШНИКОВО-🌲 КЕДРОВЫЙ": 400,
             "🌲 КЕДРОВЫЙ-🏗️ КУЛАЦКИЙ": 450, "🏗️ КУЛАЦКИЙ-🌲 КЕДРОВЫЙ": 450,
             "🌲 КЕДРОВЫЙ-🏠 КАЛИНИНСК": 500, "🏠 КАЛИНИНСК-🌲 КЕДРОВЫЙ": 500,
-            "🌲 КЕДРОВЫЙ-🌲 КЕДРОВЫЙ": 200,
-            "🌲 КЕДРОВЫЙ-✈️ АЭРОПОРТ": 400, "✈️ АЭРОПОРТ-🌲 КЕДРОВЫЙ": 400,
-            "🌲 КЕДРОВЫЙ-🍏 ДАЧИ": 400, "🍏 ДАЧИ-🌲 КЕДРОВЫЙ": 400,
-            "🏡 ПУДИНО-🌾 ЛУШНИКОВО": 300, "🌾 ЛУШНИКОВО-🏡 ПУДИНО": 300,
-            "🏡 ПУДИНО-🏠 КАЛИНИНСК": 400, "🏠 КАЛИНИНСК-🏡 ПУДИНО": 400
+            "🌲 КЕДРОВЫЙ-🌲 КЕДРОВЫЙ": 200, "🌲 КЕДРОВЫЙ-✈️ АЭРОПОРТ": 400,
+            "✈️ АЭРОПОРТ-🌲 КЕДРОВЫЙ": 400, "🌲 КЕДРОВЫЙ-🍏 ДАЧИ": 400,
+            "🍏 ДАЧИ-🌲 КЕДРОВЫЙ": 400, "🏡 ПУДИНО-🌾 ЛУШНИКОВО": 300,
+            "🌾 ЛУШНИКОВО-🏡 ПУДИНО": 300, "🏡 ПУДИНО-🏠 КАЛИНИНСК": 400, "🏠 КАЛИНИНСК-🏡 ПУДИНО": 400
         };
-
         function fill() {
             const s = document.getElementById('ds');
             for(let i=0; i<3; i++) {
@@ -95,7 +63,6 @@
                 s.add(new Option(t, d.toLocaleDateString('ru-RU')));
             }
         }
-
         function calc() {
             let f = document.getElementById('f').value, t = document.getElementById('t').value, tm = document.getElementById('tm').value;
             let b = P[f+"-"+t] || 400;
@@ -104,7 +71,6 @@
             if(n) b *= 2;
             document.getElementById('pr').innerText = b + "р" + (n ? " 🌙" : " ☀️");
         }
-
         function send() {
             tg.sendData(JSON.stringify({
                 from: document.getElementById('f').value, to: document.getElementById('t').value,
