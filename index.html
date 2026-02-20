@@ -6,48 +6,103 @@
     <title>Попутчик 2026</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f4f4f9; padding: 15px; }
-        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #0088cc; }
-        label { display: block; margin: 10px 0 5px; font-weight: bold; }
-        select, input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px; font-size: 16px; }
-        .option-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; }
-        .check-box { width: 20px; height: 20px; }
-        #pr { font-size: 22px; font-weight: bold; color: #0088cc; }
-        button { width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 10px; font-size: 18px; margin-top: 10px; }
+        body { font-family: 'Arial Black', Gadget, sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 15px; color: #fff; }
+        .card { background: #ffffff; padding: 20px; border-radius: 25px; box-shadow: 0 0 30px rgba(0,0,0,0.5); border: 4px solid #ffcc00; color: #333; }
+        
+        h2 { text-align: center; color: #ff0000; text-transform: uppercase; font-size: 26px; text-shadow: 2px 2px #ffff00; margin-bottom: 20px; }
+        
+        /* Цвета для меток */
+        .lbl-f { color: #00aa00; font-size: 18px; text-shadow: 1px 1px #eee; }
+        .lbl-t { color: #ff4500; font-size: 18px; text-shadow: 1px 1px #eee; }
+        .lbl-d { color: #0000ff; font-size: 18px; }
+        .lbl-tm { color: #990099; font-size: 18px; }
+
+        label { display: block; margin: 15px 0 5px; font-weight: 900; }
+        
+        /* Стилизация выпадающих списков с цветами городов */
+        select, input { width: 100%; padding: 12px; border: 3px solid #333; border-radius: 15px; font-size: 18px; font-weight: bold; background: #fff; }
+        
+        /* Раскрашиваем названия городов прямо в коде через селекторы, если браузер позволяет */
+        #f, #t { border-color: #0088cc; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
+
+        .option-row { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding: 12px; background: #ffffcc; border-radius: 15px; border: 2px dashed #ff0000; }
+        .option-row span { font-weight: bold; font-size: 16px; }
+        
+        .check-box { width: 30px; height: 30px; }
+        
+        /* Яркие цифры для остановок */
+        #stops { color: #ff00ff; border: 3px solid #ff00ff; text-align: center; width: 60px; float: right; }
+
+        /* ИТОГО - Самое яркое место */
+        .total-box { text-align: center; margin: 25px 0; background: #000; padding: 15px; border-radius: 20px; border: 3px solid #00ff00; }
+        .total-label { color: #fff; font-size: 22px; }
+        #pr { font-size: 40px; font-weight: 900; color: #00ff00; text-shadow: 0 0 10px #00ff00; }
+
+        button { width: 100%; padding: 20px; background: #ff0000; color: #fff; border: none; border-radius: 50px; font-size: 22px; font-weight: 900; margin-top: 10px; box-shadow: 0 8px 0 #990000; cursor: pointer; text-shadow: 2px 2px #000; }
+        button:active { box-shadow: 0 2px 0 #990000; transform: translateY(6px); }
+
+        /* Цвета для конкретных городов внутри списка (визуально для пользователя) */
+        option[value="🌲 КЕДРОВЫЙ"] { color: green; }
+        option[value="🏘️ ОСТАНИНО"] { color: brown; }
+        option[value="🏡 ПУДИНО"] { color: darkblue; }
+        option[value="🌾 ЛУШНИКОВО"] { color: gold; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>🚕 Заказать такси</h2>
-        <label>📍 Откуда:</label>
+        <h2>🚖 ТАКСИ ПОПУТЧИК 🚖</h2>
+        
+        <label class="lbl-f">🟢 ОТКУДА:</label>
         <select id="f" onchange="calc()">
-            <option>🌲 КЕДРОВЫЙ</option><option>🏘️ ОСТАНИНО</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            <option style="color: #008000;">🌲 КЕДРОВЫЙ</option>
+            <option style="color: #a52a2a;">🏘️ ОСТАНИНО</option>
+            <option style="color: #00008b;">🏡 ПУДИНО</option>
+            <option style="color: #daa520;">🌾 ЛУШНИКОВО</option>
+            <option style="color: #2f4f4f;">🏗️ КУЛАЦКИЙ</option>
+            <option style="color: #ff4500;">🏠 КАЛИНИНСК</option>
+            <option style="color: #1e90ff;">✈️ АЭРОПОРТ</option>
+            <option style="color: #32cd32;">🍏 ДАЧИ</option>
         </select>
-        <label>🏁 Куда:</label>
+        
+        <label class="lbl-t">🔴 КУДА:</label>
         <select id="t" onchange="calc()">
-            <option>🏘️ ОСТАНИНО</option><option>🌲 КЕДРОВЫЙ</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            <option style="color: #a52a2a;">🏘️ ОСТАНИНО</option>
+            <option style="color: #008000;">🌲 КЕДРОВЫЙ</option>
+            <option style="color: #00008b;">🏡 ПУДИНО</option>
+            <option style="color: #daa520;">🌾 ЛУШНИКОВО</option>
+            <option style="color: #2f4f4f;">🏗️ КУЛАЦКИЙ</option>
+            <option style="color: #ff4500;">🏠 КАЛИНИНСК</option>
+            <option style="color: #1e90ff;">✈️ АЭРОПОРТ</option>
+            <option style="color: #32cd32;">🍏 ДАЧИ</option>
         </select>
-        <label>📅 Дата:</label>
-        <select id="ds" onchange="calc()"></select>
-        <label>⏰ Время:</label>
-        <input type="time" id="tm" onchange="calc()">
+        
+        <label class="lbl-d">📅 ДАТА ПОЕЗДКИ:</label>
+        <select id="ds" onchange="calc()" style="color: #0000ff; border-color: #0000ff;"></select>
+        
+        <label class="lbl-tm">🕙 ВРЕМЯ:</label>
+        <input type="time" id="tm" onchange="calc()" style="color: #990099; border-color: #990099;">
         
         <div class="option-row">
-            <span>📦 Багаж / Груз (+50р)</span>
+            <span style="color: #8b4513;">📦 ГРУЗ / БАГАЖ <b style="color: #ff0000;">(+50)</b></span>
             <input type="checkbox" id="cargo" class="check-box" onchange="calc()">
         </div>
+        
         <div class="option-row">
-            <span>👶 С детьми (+50р)</span>
+            <span style="color: #0000cd;">👶 ДЕТСКОЕ КРЕСЛО <b style="color: #ff0000;">(+50)</b></span>
             <input type="checkbox" id="kids" class="check-box" onchange="calc()">
         </div>
-        <label>🛑 Остановки (+50р):</label>
-        <input type="number" id="stops" value="0" min="0" onchange="calc()">
-
-        <div style="text-align:center; margin: 15px 0;">
-            Итого: <span id="pr">400р</span>
+        
+        <div style="overflow: hidden; margin-top: 10px;">
+            <label style="color: #ff00ff; float: left;">🛑 ОСТАНОВКИ:</label>
+            <input type="number" id="stops" value="0" min="0" onchange="calc()">
         </div>
-        <button onclick="send()">ОТПРАВИТЬ ЗАКАЗ</button>
+
+        <div class="total-box">
+            <div class="total-label">💰 К ОПЛАТЕ:</div>
+            <span id="pr">400р</span>
+        </div>
+        
+        <button onclick="send()">ПОЕХАЛИ! 🚀</button>
     </div>
 
     <script>
@@ -81,19 +136,16 @@
             document.getElementById('tm').value = String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0');
         }
 
-       function calc() {
-    let f = document.getElementById('f').value, t = document.getElementById('t').value;
-    let base = P[f + "-" + t] || 400;
-    
-    let h = parseInt(document.getElementById('tm').value.split(':')[0]);
-    if (h >= 22 || h < 8) base *= 2; // Ночной тариф
-
-    if (document.getElementById('cargo').checked) base += 50;
-    if (document.getElementById('kids').checked) base += 50; // ВОТ ЭТО ПРИБАВЛЯЕТ 50р ЗА ДЕТЕЙ
-    
-    base += (parseInt(document.getElementById('stops').value) * 50);
-    document.getElementById('pr').innerText = base + "р";
-}
+        function calc() {
+            let f = document.getElementById('f').value, t = document.getElementById('t').value;
+            let base = P[f+"-"+t] || 400;
+            let h = parseInt(document.getElementById('tm').value.split(':')[0]);
+            if(h >= 22 || h < 8) base *= 2;
+            if(document.getElementById('cargo').checked) base += 50;
+            if(document.getElementById('kids').checked) base += 50; 
+            base += (parseInt(document.getElementById('stops').value) * 50);
+            document.getElementById('pr').innerText = base + "р";
+        }
 
         function send() {
             tg.sendData(JSON.stringify({
