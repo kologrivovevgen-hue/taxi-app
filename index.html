@@ -16,6 +16,13 @@
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: 2px solid #f0f0f0; font-size: 16px; font-weight: bold; outline: none; }
         .c-kedr { color: #1e88e5; } .c-ost { color: #8e24aa; } .c-pud { color: #43a047; } 
         .c-lush { color: #fb8c00; } .c-kal { color: #e53935; } .c-kul { color: #5d4037; }
+        
+        /* Стили для доп. опций */
+        .option-row { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 10px; border-radius: 12px; margin-top: 10px; border: 1px solid #eee; }
+        .option-label { font-size: 14px; font-weight: bold; color: #555; }
+        .check-box { width: 24px; height: 24px; cursor: pointer; }
+        .stop-select { width: 60px; padding: 5px; margin: 0; }
+
         .price-box { background: linear-gradient(135deg, #2196f3, #00bcd4); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-size: 28px; font-weight: 900; }
         .btn { background: #ff9800; color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         .dev { text-align: center; margin-top: 20px; font-size: 10px; color: #aaa; }
@@ -29,14 +36,32 @@
             <select id="f" onchange="calc()">
                 <option class="c-kedr">🌲 КЕДРОВЫЙ</option><option class="c-ost">🏘️ ОСТАНИНО</option><option class="c-pud">🏡 ПУДИНО</option><option class="c-lush">🌾 ЛУШНИКОВО</option><option class="c-kul">🏗️ КУЛАЦКИЙ</option><option class="c-kal">🏠 КАЛИНИНСК</option><option class="c-kedr">✈️ АЭРОПОРТ</option><option class="c-lush">🍏 ДАЧИ</option>
             </select>
+            
             <div class="lbl to-lbl">🏁 КУДА ЕДЕМ:</div>
             <select id="t" onchange="calc()">
                 <option class="c-ost">🏘️ ОСТАНИНО</option><option class="c-kedr">🌲 КЕДРОВЫЙ</option><option class="c-pud">🏡 ПУДИНО</option><option class="c-lush">🌾 ЛУШНИКОВО</option><option class="c-kul">🏗️ КУЛАЦКИЙ</option><option class="c-kal">🏠 КАЛИНИНСК</option><option class="c-kedr">✈️ АЭРОПОРТ</option><option class="c-lush">🍏 ДАЧИ</option>
             </select>
+            
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <div style="flex:1.2"><label class="lbl">📅 ДАТА</label><select id="ds" onchange="calc()"></select></div>
                 <div style="flex:0.8"><label class="lbl">⏰ ВРЕМЯ</label><input type="time" id="tm" value="12:00" onchange="calc()"></div>
             </div>
+
+            <div class="lbl" style="color:#607d8b">➕ ДОПОЛНИТЕЛЬНО:</div>
+            <div class="option-row">
+                <span class="option-label">📦 Груз / Багаж (+50р)</span>
+                <input type="checkbox" id="cargo" class="check-box" onchange="calc()">
+            </div>
+            <div class="option-row">
+                <span class="option-label">🛑 Остановки (+50р каждая)</span>
+                <select id="stops" class="stop-select" onchange="calc()">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
             <div class="price-box" id="pr">300р</div>
             <button class="btn" onclick="send()">ПОДТВЕРДИТЬ</button>
             <div class="dev">РАЗРАБОТКА:<br><b>КОЛОГРИВОВ ЕВГЕНИЙ ЕВГЕНЬЕВИЧ И GEMINI</b></div>
@@ -65,16 +90,25 @@
         }
         function calc() {
             let f = document.getElementById('f').value, t = document.getElementById('t').value, tm = document.getElementById('tm').value;
-            let b = P[f+"-"+t] || 400;
+            let base = P[f+"-"+t] || 400;
             let h = parseInt(tm.split(':')[0]), m = parseInt(tm.split(':')[1]);
             let n = (h >= 22 || h < 8 || (h === 8 && m <= 8));
-            if(n) b *= 2;
-            document.getElementById('pr').innerText = b + "р" + (n ? " 🌙" : " ☀️");
+            if(n) base *= 2;
+
+            // Добавляем груз и остановки
+            if(document.getElementById('cargo').checked) base += 50;
+            let stopsCount = parseInt(document.getElementById('stops').value);
+            base += (stopsCount * 50);
+
+            document.getElementById('pr').innerText = base + "р" + (n ? " 🌙" : " ☀️");
         }
         function send() {
+            let cargoText = document.getElementById('cargo').checked ? "Да" : "Нет";
+            let stopsText = document.getElementById('stops').value;
             tg.sendData(JSON.stringify({
                 from: document.getElementById('f').value, to: document.getElementById('t').value,
                 date: document.getElementById('ds').value, time: document.getElementById('tm').value,
+                cargo: cargoText, stops: stopsText,
                 price: document.getElementById('pr').innerText
             }));
         }
