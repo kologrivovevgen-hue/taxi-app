@@ -6,103 +6,83 @@
     <title>Попутчик 2026</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: 'Arial Black', Gadget, sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 15px; color: #fff; }
-        .card { background: #ffffff; padding: 20px; border-radius: 25px; box-shadow: 0 0 30px rgba(0,0,0,0.5); border: 4px solid #ffcc00; color: #333; }
+        body { font-family: 'Arial Black', sans-serif; background: #1a1a1a; padding: 10px; margin: 0; }
+        .card { background: white; max-width: 450px; margin: 0 auto; border-radius: 20px; overflow: hidden; border: 4px solid #ffcc00; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         
-        h2 { text-align: center; color: #ff0000; text-transform: uppercase; font-size: 26px; text-shadow: 2px 2px #ffff00; margin-bottom: 20px; }
+        /* ШАПКА С ФОТО МАШИНЫ */
+        .header-container { width: 100%; background: #000; border-bottom: 4px solid #ffcc00; position: relative; }
+        .car-photo { width: 100%; height: auto; display: block; }
         
-        /* Цвета для меток */
-        .lbl-f { color: #00aa00; font-size: 18px; text-shadow: 1px 1px #eee; }
-        .lbl-t { color: #ff4500; font-size: 18px; text-shadow: 1px 1px #eee; }
-        .lbl-d { color: #0000ff; font-size: 18px; }
-        .lbl-tm { color: #990099; font-size: 18px; }
+        .title-bar { background: #000; color: #ffcc00; text-align: center; padding: 12px; font-size: 20px; text-transform: uppercase; font-weight: 900; }
 
-        label { display: block; margin: 15px 0 5px; font-weight: 900; }
+        .content { padding: 15px; }
         
-        /* Стилизация выпадающих списков с цветами городов */
-        select, input { width: 100%; padding: 12px; border: 3px solid #333; border-radius: 15px; font-size: 18px; font-weight: bold; background: #fff; }
+        /* ЦВЕТНЫЕ МЕТКИ */
+        label { display: block; margin: 12px 0 5px; font-weight: 900; font-size: 16px; text-transform: uppercase; }
+        .lbl-f { color: #2ecc71; } 
+        .lbl-t { color: #e74c3c; } 
+        .lbl-d { color: #3498db; } 
+        .lbl-tm { color: #9b59b6; } 
+
+        select, input { width: 100%; padding: 12px; border: 3px solid #333; border-radius: 12px; font-size: 17px; font-weight: bold; background: #fff; margin-bottom: 5px; box-sizing: border-box; }
         
-        /* Раскрашиваем названия городов прямо в коде через селекторы, если браузер позволяет */
-        #f, #t { border-color: #0088cc; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
-
-        .option-row { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding: 12px; background: #ffffcc; border-radius: 15px; border: 2px dashed #ff0000; }
-        .option-row span { font-weight: bold; font-size: 16px; }
+        .option-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; padding: 10px; background: #fffde7; border-radius: 12px; border: 2px solid #ffcc00; }
+        .option-row span { font-weight: bold; color: #333; font-size: 14px; }
         
-        .check-box { width: 30px; height: 30px; }
+        .check-box { width: 28px; height: 28px; cursor: pointer; }
         
-        /* Яркие цифры для остановок */
-        #stops { color: #ff00ff; border: 3px solid #ff00ff; text-align: center; width: 60px; float: right; }
+        .total-box { text-align: center; margin: 15px 0; padding: 15px; background: #000; border-radius: 15px; border: 3px solid #ffcc00; }
+        .total-box span { color: #fff; font-size: 16px; font-weight: bold; }
+        #pr { font-size: 38px; font-weight: 900; color: #ffcc00; text-shadow: 2px 2px #ff0000; display: block; margin-top: 5px; }
 
-        /* ИТОГО - Самое яркое место */
-        .total-box { text-align: center; margin: 25px 0; background: #000; padding: 15px; border-radius: 20px; border: 3px solid #00ff00; }
-        .total-label { color: #fff; font-size: 22px; }
-        #pr { font-size: 40px; font-weight: 900; color: #00ff00; text-shadow: 0 0 10px #00ff00; }
-
-        button { width: 100%; padding: 20px; background: #ff0000; color: #fff; border: none; border-radius: 50px; font-size: 22px; font-weight: 900; margin-top: 10px; box-shadow: 0 8px 0 #990000; cursor: pointer; text-shadow: 2px 2px #000; }
-        button:active { box-shadow: 0 2px 0 #990000; transform: translateY(6px); }
-
-        /* Цвета для конкретных городов внутри списка (визуально для пользователя) */
-        option[value="🌲 КЕДРОВЫЙ"] { color: green; }
-        option[value="🏘️ ОСТАНИНО"] { color: brown; }
-        option[value="🏡 ПУДИНО"] { color: darkblue; }
-        option[value="🌾 ЛУШНИКОВО"] { color: gold; }
+        button { width: 100%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 15px; font-size: 20px; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 0 #b8860b; }
+        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #b8860b; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>🚖 ТАКСИ ПОПУТЧИК 🚖</h2>
-        
-        <label class="lbl-f">🟢 ОТКУДА:</label>
-        <select id="f" onchange="calc()">
-            <option style="color: #008000;">🌲 КЕДРОВЫЙ</option>
-            <option style="color: #a52a2a;">🏘️ ОСТАНИНО</option>
-            <option style="color: #00008b;">🏡 ПУДИНО</option>
-            <option style="color: #daa520;">🌾 ЛУШНИКОВО</option>
-            <option style="color: #2f4f4f;">🏗️ КУЛАЦКИЙ</option>
-            <option style="color: #ff4500;">🏠 КАЛИНИНСК</option>
-            <option style="color: #1e90ff;">✈️ АЭРОПОРТ</option>
-            <option style="color: #32cd32;">🍏 ДАЧИ</option>
-        </select>
-        
-        <label class="lbl-t">🔴 КУДА:</label>
-        <select id="t" onchange="calc()">
-            <option style="color: #a52a2a;">🏘️ ОСТАНИНО</option>
-            <option style="color: #008000;">🌲 КЕДРОВЫЙ</option>
-            <option style="color: #00008b;">🏡 ПУДИНО</option>
-            <option style="color: #daa520;">🌾 ЛУШНИКОВО</option>
-            <option style="color: #2f4f4f;">🏗️ КУЛАЦКИЙ</option>
-            <option style="color: #ff4500;">🏠 КАЛИНИНСК</option>
-            <option style="color: #1e90ff;">✈️ АЭРОПОРТ</option>
-            <option style="color: #32cd32;">🍏 ДАЧИ</option>
-        </select>
-        
-        <label class="lbl-d">📅 ДАТА ПОЕЗДКИ:</label>
-        <select id="ds" onchange="calc()" style="color: #0000ff; border-color: #0000ff;"></select>
-        
-        <label class="lbl-tm">🕙 ВРЕМЯ:</label>
-        <input type="time" id="tm" onchange="calc()" style="color: #990099; border-color: #990099;">
-        
-        <div class="option-row">
-            <span style="color: #8b4513;">📦 ГРУЗ / БАГАЖ <b style="color: #ff0000;">(+50)</b></span>
-            <input type="checkbox" id="cargo" class="check-box" onchange="calc()">
+        <div class="header-container">
+            <img class="car-photo" src="https://img.freepik.com/free-photo/white-off-roader-jeep-parking_114579-4007.jpg" alt="Автомобиль">
         </div>
         
-        <div class="option-row">
-            <span style="color: #0000cd;">👶 ДЕТСКОЕ КРЕСЛО <b style="color: #ff0000;">(+50)</b></span>
-            <input type="checkbox" id="kids" class="check-box" onchange="calc()">
-        </div>
-        
-        <div style="overflow: hidden; margin-top: 10px;">
-            <label style="color: #ff00ff; float: left;">🛑 ОСТАНОВКИ:</label>
-            <input type="number" id="stops" value="0" min="0" onchange="calc()">
-        </div>
+        <div class="title-bar">🚕 ПОПУТЧИК 2026</div>
 
-        <div class="total-box">
-            <div class="total-label">💰 К ОПЛАТЕ:</div>
-            <span id="pr">400р</span>
+        <div class="content">
+            <label class="lbl-f">📍 ОТКУДА (Старт):</label>
+            <select id="f" onchange="calc()" style="border-color: #2ecc71;">
+                <option>🌲 КЕДРОВЫЙ</option><option>🏘️ ОСТАНИНО</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            </select>
+
+            <label class="lbl-t">🏁 КУДА (Финиш):</label>
+            <select id="t" onchange="calc()" style="border-color: #e74c3c;">
+                <option>🏘️ ОСТАНИНО</option><option>🌲 КЕДРОВЫЙ</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            </select>
+
+            <label class="lbl-d">📅 ВЫБЕРИТЕ ДАТУ:</label>
+            <select id="ds" onchange="calc()" style="border-color: #3498db;"></select>
+
+            <label class="lbl-tm">⏰ ВРЕМЯ ВЫЕЗДА:</label>
+            <input type="time" id="tm" onchange="calc()" style="border-color: #9b59b6;">
+
+            <div class="option-row">
+                <span>📦 БАГАЖ / ГРУЗ <b style="color: #e74c3c;">(+50р)</b></span>
+                <input type="checkbox" id="cargo" class="check-box" onchange="calc()">
+            </div>
+            <div class="option-row">
+                <span>👶 С ДЕТЬМИ <b style="color: #e74c3c;">(+50р)</b></span>
+                <input type="checkbox" id="kids" class="check-box" onchange="calc()">
+            </div>
+            
+            <label style="color: #e67e22;">🛑 ОСТАНОВКИ (+50р):</label>
+            <input type="number" id="stops" value="0" min="0" onchange="calc()" style="border-color: #e67e22;">
+
+            <div class="total-box">
+                <span>К ОПЛАТЕ:</span>
+                <span id="pr">400р</span>
+            </div>
+
+            <button onclick="send()">ОТПРАВИТЬ ЗАКАЗ 🚀</button>
         </div>
-        
-        <button onclick="send()">ПОЕХАЛИ! 🚀</button>
     </div>
 
     <script>
