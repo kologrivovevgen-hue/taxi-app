@@ -1,30 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f0f0f5; display: flex; justify-content: center; padding: 20px; }
-        .app { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        select, button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; font-size: 16px; }
-        button { background: #0088cc; color: white; border: none; font-weight: bold; }
-        h2 { text-align: center; color: #0088cc; }
+        :root { --tg-color: #0088cc; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-card { background: white; width: 100%; max-width: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .car-header {
+            width: 100%; height: 180px;
+            background-image: url('https://s.auto.drom.ru/i24219/pubs/4/62534/2807086.jpg');
+            background-size: cover; background-position: center; position: relative;
+        }
+
+        .car-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 15px; color: white;
+        }
+
+        .content { padding: 20px; }
+        
+        .visual-box { 
+            background: #e3f2fd; border-radius: 12px; padding: 10px; margin-bottom: 15px; 
+            text-align: center; border: 1px solid #bbdefb; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .city-type { font-weight: bold; color: #1565c0; text-transform: uppercase; font-size: 12px; }
+
+        label { display: block; margin-top: 12px; color: #353b48; font-weight: 600; font-size: 14px; }
+        select { 
+            width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; 
+            border: 1px solid #dcdde1; background: #fff; font-size: 16px;
+        }
+
+        .btn { 
+            background: var(--tg-color); color: white; border: none; width: 100%; 
+            padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; 
+            margin-top: 20px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="app">
-        <h2>Заказ такси 2026</h2>
-        <label>Откуда:</label>
-        <select id="from"><option>КЕДРОВЫЙ</option><option>КАЛИНИНСК</option></select>
-        <label>Куда:</label>
-        <select id="to"><option>ПУДИНО</option><option>КЕДРОВЫЙ</option></select>
-        <button onclick="send()">ПОДТВЕРДИТЬ ЗАКАЗ</button>
+    <div class="app-card">
+        <div class="car-header">
+            <div class="car-overlay">
+                <div style="font-size: 22px; font-weight: 900;">ПОПУТЧИК 2026</div>
+                <div style="font-size: 12px; opacity: 0.9;">🚖 Поездки на Lada Granta</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="visual-box">
+                <span id="icon" style="font-size: 24px;">🏡</span>
+                <span class="city-type" id="type">Выберите откуда ехать</span>
+            </div>
+
+            <label>ОТКУДА (Точка сбора):</label>
+            <select id="from" onchange="updateView()">
+                <option value="КЕДРОВЫЙ">📍 КЕДРОВЫЙ (Поселок)</option>
+                <option value="КАЛИНИНСК">📍 КАЛИНИНСК (Село)</option>
+                <option value="ЛУШНИКОВО">📍 ЛУШНИКОВО (Деревня)</option>
+                <option value="ПУДИНО">📍 ПУДИНО (Поселок)</option>
+                <option value="ОСТАНИНО">📍 ОСТАНИНО (Поселок)</option>
+            </select>
+
+            <label>КУДА (Назначение):</label>
+            <select id="to">
+                <option value="КАЛИНИНСК">🏁 КАЛИНИНСК</option>
+                <option value="КЕДРОВЫЙ">🏁 КЕДРОВЫЙ</option>
+                <option value="ЛУШНИКОВО">🏁 ЛУШНИКОВО</option>
+                <option value="ПУДИНО">🏁 ПУДИНО</option>
+                <option value="ОСТАНИНО">🏁 ОСТАНИНО</option>
+            </select>
+
+            <button class="btn" onclick="sendData()">ЗАБРОНИРОВАТЬ ГРАНТУ</button>
+        </div>
     </div>
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        function send() {
+
+        const info = {
+            "КЕДРОВЫЙ": { t: "Поселок", i: "🌲" },
+            "КАЛИНИНСК": { t: "Село", i: "🏠" },
+            "ПУДИНО": { t: "Поселок", i: "🏡" },
+            "ОСТАНИНО": { t: "Поселок", i: "🏘️" },
+            "ЛУШНИКОВО": { t: "Деревня", i: "🌾" }
+        };
+
+        function updateView() {
+            let v = document.getElementById('from').value;
+            document.getElementById('type').innerText = info[v].t;
+            document.getElementById('icon').innerText = info[v].i;
+        }
+
+        function sendData() {
             let order = {
                 from: document.getElementById('from').value,
                 to: document.getElementById('to').value,
@@ -32,6 +105,7 @@
             };
             tg.sendData(JSON.stringify(order));
         }
+        updateView();
     </script>
 </body>
 </html>
