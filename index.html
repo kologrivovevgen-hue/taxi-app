@@ -61,6 +61,38 @@
                     <option value="3">3</option>
                 </select>
             </div>
+<div class="option-row">
+    <span class="option-label">👶 С детьми (+50р)</span>
+    <input type="checkbox" id="kids" class="check-box" onchange="calc()">
+</div>
+
+<script>
+    // В функции calc() добавь расчет для детей:
+    function calc() {
+        // ... твой старый код ...
+        
+        // Добавляем детей в расчет (тоже +50р к базе)
+        if(document.getElementById('kids').checked) base += 50;
+
+        document.getElementById('pr').innerText = base + "р" + (n ? " 🌙" : " ☀️");
+    }
+
+    // В функции send() добавь отправку данных о детях:
+    function send() {
+        let kidsText = document.getElementById('kids').checked ? "Да" : "Нет";
+        // Добавь 'kids: kidsText' в JSON.stringify:
+        tg.sendData(JSON.stringify({
+            from: document.getElementById('f').value, 
+            to: document.getElementById('t').value,
+            date: document.getElementById('ds').options[document.getElementById('ds').selectedIndex].text, 
+            time: document.getElementById('tm').value,
+            cargo: document.getElementById('cargo').checked ? "Да" : "Нет", 
+            stops: document.getElementById('stops').value,
+            kids: kidsText, // Вот это добавили
+            price: document.getElementById('pr').innerText
+        }));
+    }
+</script>
 
             <div class="price-box" id="pr">300р</div>
             <button class="btn" onclick="send()">ПОДТВЕРДИТЬ</button>
