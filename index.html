@@ -6,62 +6,48 @@
     <title>Попутчик 2026</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 15px; color: #333; }
+        body { font-family: sans-serif; background: #f4f4f9; padding: 15px; }
         .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #0088cc; margin-top: 0; }
-        label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 14px; }
-        select, input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        .option-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 8px; }
-        .check-box { width: 22px; height: 22px; }
-        .price-box { text-align: center; margin: 20px 0; padding: 15px; background: #e1f5fe; border-radius: 10px; border: 1px solid #b3e5fc; }
-        #pr { font-size: 24px; font-weight: bold; color: #0288d1; }
-        button { width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        button:active { background: #0077b5; }
+        h2 { text-align: center; color: #0088cc; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px; font-size: 16px; }
+        .option-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; }
+        .check-box { width: 20px; height: 20px; }
+        #pr { font-size: 22px; font-weight: bold; color: #0088cc; }
+        button { width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 10px; font-size: 18px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>🚕 Заказать поездку</h2>
-        
+        <h2>🚕 Заказать такси</h2>
         <label>📍 Откуда:</label>
         <select id="f" onchange="calc()">
-            <option>🌲 КЕДРОВЫЙ</option><option>🏘️ ОСТАНИНО</option><option>🏡 ПУДИНО</option>
-            <option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option>
-            <option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            <option>🌲 КЕДРОВЫЙ</option><option>🏘️ ОСТАНИНО</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
         </select>
-
         <label>🏁 Куда:</label>
         <select id="t" onchange="calc()">
-            <option>🏘️ ОСТАНИНО</option><option>🌲 КЕДРОВЫЙ</option><option>🏡 ПУДИНО</option>
-            <option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option>
-            <option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
+            <option>🏘️ ОСТАНИНО</option><option>🌲 КЕДРОВЫЙ</option><option>🏡 ПУДИНО</option><option>🌾 ЛУШНИКОВО</option><option>🏗️ КУЛАЦКИЙ</option><option>🏠 КАЛИНИНСК</option><option>✈️ АЭРОПОРТ</option><option>🍏 ДАЧИ</option>
         </select>
-
         <label>📅 Дата:</label>
         <select id="ds" onchange="calc()"></select>
-
         <label>⏰ Время:</label>
         <input type="time" id="tm" onchange="calc()">
-
+        
         <div class="option-row">
             <span>📦 Багаж / Груз (+50р)</span>
             <input type="checkbox" id="cargo" class="check-box" onchange="calc()">
         </div>
-
         <div class="option-row">
             <span>👶 С детьми (+50р)</span>
             <input type="checkbox" id="kids" class="check-box" onchange="calc()">
         </div>
-
-        <label>🛑 Промежуточные остановки (+50р/ед):</label>
+        <label>🛑 Остановки (+50р):</label>
         <input type="number" id="stops" value="0" min="0" onchange="calc()">
 
-        <div class="price-box">
-            <span>Итоговая стоимость:</span><br>
-            <span id="pr">400р</span>
+        <div style="text-align:center; margin: 15px 0;">
+            Итого: <span id="pr">400р</span>
         </div>
-
-        <button onclick="send()">ОТПРАВИТЬ ЗАЯВКУ</button>
+        <button onclick="send()">ОТПРАВИТЬ ЗАКАЗ</button>
     </div>
 
     <script>
@@ -79,7 +65,9 @@
             "🍏 ДАЧИ-🌲 КЕДРОВЫЙ": 400, "🏠 КАЛИНИНСК-✈️ АЭРОПОРТ": 450,
             "🏠 КАЛИНИНСК-🍏 ДАЧИ": 950, "🏗️ КУЛАЦКИЙ-🍏 ДАЧИ": 900,
             "🌾 ЛУШНИКОВО-🍏 ДАЧИ": 850, "🏡 ПУДИНО-🍏 ДАЧИ": 800,
-            "🏘️ ОСТАНИНО-🍏 ДАЧИ": 750, "🏘️ ОСТАНИНО-✈️ АЭРОПОРТ": 450
+            "🏘️ ОСТАНИНО-🍏 ДАЧИ": 750, "🏗️ КУЛАЦКИЙ-✈️ АЭРОПОРТ": 450,
+            "🌾 ЛУШНИКОВО-✈️ АЭРОПОРТ": 450, "🏡 ПУДИНО-✈️ АЭРОПОРТ": 450,
+            "🏘️ ОСТАНИНО-✈️ АЭРОПОРТ": 450
         };
 
         function fill() {
@@ -94,33 +82,19 @@
         }
 
         function calc() {
-            const ds = document.getElementById('ds');
-            const tmInput = document.getElementById('tm');
-            const now = new Date();
-            
-            if (ds.value === now.toISOString().split('T')[0]) {
-                let cur = String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0');
-                if (tmInput.value < cur) tmInput.value = cur;
-            }
-
             let f = document.getElementById('f').value, t = document.getElementById('t').value;
             let base = P[f+"-"+t] || 400;
-            
-            let h = parseInt(tmInput.value.split(':')[0]);
-            let n = (h >= 22 || h < 8);
-            if(n) base *= 2;
-
+            let h = parseInt(document.getElementById('tm').value.split(':')[0]);
+            if(h >= 22 || h < 8) base *= 2;
             if(document.getElementById('cargo').checked) base += 50;
-            if(document.getElementById('kids').checked) base += 50;
+            if(document.getElementById('kids').checked) base += 50; // +50р за детей
             base += (parseInt(document.getElementById('stops').value) * 50);
-
-            document.getElementById('pr').innerText = base + "р" + (n ? " 🌙" : " ☀️");
+            document.getElementById('pr').innerText = base + "р";
         }
 
         function send() {
             tg.sendData(JSON.stringify({
-                from: document.getElementById('f').value,
-                to: document.getElementById('t').value,
+                from: document.getElementById('f').value, to: document.getElementById('t').value,
                 date: document.getElementById('ds').options[document.getElementById('ds').selectedIndex].text,
                 time: document.getElementById('tm').value,
                 cargo: document.getElementById('cargo').checked ? "Да" : "Нет",
