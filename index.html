@@ -1,81 +1,68 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --tg-color: #0088cc; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .app-card { background: white; width: 100%; max-width: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        .car-header {
-            width: 100%; height: 180px;
-            background-image: url('https://s.auto.drom.ru/i24219/pubs/4/62534/2807086.jpg');
-            background-size: cover; background-position: center; position: relative;
-        }
-
-        .car-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 15px; color: white;
-        }
-
-        .content { padding: 20px; }
-        
-        .visual-box { 
-            background: #e3f2fd; border-radius: 12px; padding: 10px; margin-bottom: 15px; 
-            text-align: center; border: 1px solid #bbdefb; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .city-type { font-weight: bold; color: #1565c0; text-transform: uppercase; font-size: 12px; }
-
-        label { display: block; margin-top: 12px; color: #353b48; font-weight: 600; font-size: 14px; }
-        select { 
-            width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; 
-            border: 1px solid #dcdde1; background: #fff; font-size: 16px;
-        }
-
-        .btn { 
-            background: var(--tg-color); color: white; border: none; width: 100%; 
-            padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; 
-            margin-top: 20px; cursor: pointer;
-        }
+        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 10px; color: #333; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-width: 400px; margin: auto; }
+        .header-img { width: 100%; height: 150px; background: url('https://s.auto.drom.ru/i24219/pubs/4/62534/2807086.jpg') center/cover; }
+        .form { padding: 15px; }
+        label { font-size: 12px; font-weight: bold; color: #666; display: block; margin-top: 10px; text-transform: uppercase; }
+        select, input { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 15px; background: #fafafa; }
+        .row { display: flex; gap: 10px; }
+        button { background: #0088cc; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        button:active { background: #006699; }
+        h2 { margin: 0; color: #0088cc; text-align: center; font-size: 20px; }
     </style>
 </head>
 <body>
-    <div class="app-card">
-        <div class="car-header">
-            <div class="car-overlay">
-                <div style="font-size: 22px; font-weight: 900;">ПОПУТЧИК 2026</div>
-                <div style="font-size: 12px; opacity: 0.9;">🚖 Поездки на Lada Granta</div>
+    <div class="card">
+        <div class="header-img"></div>
+        <div class="form">
+            <h2>🚕 ПОПУТЧИК 2026</h2>
+            
+            <div class="row">
+                <div style="flex: 1;">
+                    <label>Откуда:</label>
+                    <select id="f"><option>КЕДРОВЫЙ</option><option>КАЛИНИНСК</option><option>ЛУШНИКОВО</option><option>ПУДИНО</option><option>ОСТАНИНО</option></select>
+                </div>
+                <div style="flex: 1;">
+                    <label>Куда:</label>
+                    <select id="t"><option>КАЛИНИНСК</option><option>КЕДРОВЫЙ</option><option>ЛУШНИКОВО</option><option>ПУДИНО</option><option>ОСТАНИНО</option></select>
+                </div>
             </div>
-        </div>
 
-        <div class="content">
-            <div class="visual-box">
-                <span id="icon" style="font-size: 24px;">🏡</span>
-                <span class="city-type" id="type">Выберите откуда ехать</span>
+            <div class="row">
+                <div style="flex: 1;">
+                    <label>Дата:</label>
+                    <input type="text" id="d" readonly>
+                </div>
+                <div style="flex: 1;">
+                    <label>Время:</label>
+                    <input type="time" id="tm">
+                </div>
             </div>
 
-            <label>ОТКУДА (Точка сбора):</label>
-            <select id="from" onchange="updateView()">
-                <option value="КЕДРОВЫЙ">📍 КЕДРОВЫЙ (Поселок)</option>
-                <option value="КАЛИНИНСК">📍 КАЛИНИНСК (Село)</option>
-                <option value="ЛУШНИКОВО">📍 ЛУШНИКОВО (Деревня)</option>
-                <option value="ПУДИНО">📍 ПУДИНО (Поселок)</option>
-                <option value="ОСТАНИНО">📍 ОСТАНИНО (Поселок)</option>
-            </select>
+            <div class="row">
+                <div style="flex: 1;">
+                    <label>Мест:</label>
+                    <select id="s"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+                </div>
+                <div style="flex: 1;">
+                    <label>Дети:</label>
+                    <select id="k"><option value="Нет">Нет</option><option value="Да">Да</option></select>
+                </div>
+            </div>
 
-            <label>КУДА (Назначение):</label>
-            <select id="to">
-                <option value="КАЛИНИНСК">🏁 КАЛИНИНСК</option>
-                <option value="КЕДРОВЫЙ">🏁 КЕДРОВЫЙ</option>
-                <option value="ЛУШНИКОВО">🏁 ЛУШНИКОВО</option>
-                <option value="ПУДИНО">🏁 ПУДИНО</option>
-                <option value="ОСТАНИНО">🏁 ОСТАНИНО</option>
-            </select>
+            <label>До адреса (+50р):</label>
+            <select id="st"><option value="Нет">До остановки</option><option value="Да">До двери</option></select>
 
-            <button class="btn" onclick="sendData()">ЗАБРОНИРОВАТЬ ГРАНТУ</button>
+            <label>Багаж (+100р):</label>
+            <select id="l"><option value="0">Ручная кладь</option><option value="100">Большой багаж</option></select>
+
+            <button onclick="sendOrder()">🚀 ЗАКАЗАТЬ ГРАНТУ</button>
         </div>
     </div>
 
@@ -83,29 +70,42 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        const info = {
-            "КЕДРОВЫЙ": { t: "Поселок", i: "🌲" },
-            "КАЛИНИНСК": { t: "Село", i: "🏠" },
-            "ПУДИНО": { t: "Поселок", i: "🏡" },
-            "ОСТАНИНО": { t: "Поселок", i: "🏘️" },
-            "ЛУШНИКОВО": { t: "Деревня", i: "🌾" }
-        };
+        // Установка текущей даты и времени при открытии
+        const сейчас = new Date();
+        document.getElementById('d').value = сейчас.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit'});
+        
+        // Округляем время до ближайшего
+        const часы = String(сейчас.getHours()).padStart(2, '0');
+        const минуты = String(сейчас.getMinutes()).padStart(2, '0');
+        document.getElementById('tm').value = `${часы}:${минуты}`;
 
-        function updateView() {
-            let v = document.getElementById('from').value;
-            document.getElementById('type').innerText = info[v].t;
-            document.getElementById('icon').innerText = info[v].i;
-        }
+        function sendOrder() {
+            const выбраноВремя = document.getElementById('tm').value;
+            const [ч, м] = выбраноВремя.split(':').map(Number);
+            
+            const времяЗаказа = new Date();
+            времяЗаказа.setHours(ч, м, 0, 0);
 
-        function sendData() {
-            let order = {
-                from: document.getElementById('from').value,
-                to: document.getElementById('to').value,
-                price: "400р"
+            const текущееВремя = new Date();
+
+            // ПРОВЕРКА: Если время в прошлом (с запасом 1 минута)
+            if (времяЗаказа < текущееВремя) {
+                alert("Нельзя заказать машину на прошедшее время! ❌");
+                return;
+            }
+
+            let data = {
+                f: document.getElementById('f').value,
+                t: document.getElementById('t').value,
+                d: document.getElementById('d').value,
+                tm: выбраноВремя,
+                s: document.getElementById('s').value,
+                k: document.getElementById('k').value,
+                st: document.getElementById('st').value,
+                l: document.getElementById('l').value
             };
-            tg.sendData(JSON.stringify(order));
+            tg.sendData(JSON.stringify(data));
         }
-        updateView();
     </script>
 </body>
 </html>
