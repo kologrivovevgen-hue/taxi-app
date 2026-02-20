@@ -5,100 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --tg-color: #0088cc; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
-        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 420px; margin: auto; }
-        
-        .header-img { 
-            width: 100%; height: 180px; 
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), 
-                        url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg') center/cover;
-            display: flex; align-items: flex-end; padding: 20px; box-sizing: border-box;
-        }
-        .header-title { color: white; font-size: 24px; font-weight: 900; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
+        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 420px; margin: auto; }
+        .header { height: 160px; background: url('https://img.freepik.com/free-photo/white-sedan-car-driving-on-the-road-at-night_114579-5066.jpg') center/cover; position: relative; }
+        .header-text { position: absolute; bottom: 15px; left: 20px; color: white; font-size: 22px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .content { padding: 20px; }
         
-        /* ЦВЕТНЫЕ МЕТКИ */
-        .lbl-from { color: #ff5722; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: 10px; }
-        .lbl-to { color: #4caf50; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: 15px; }
+        /* ЦВЕТНЫЕ ПОЛЯ */
+        .lbl { font-size: 11px; font-weight: 800; margin-top: 15px; text-transform: uppercase; }
+        .from-lbl { color: #e91e63; }
+        .to-lbl { color: #4caf50; }
         
-        select, input { 
-            width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; 
-            border: 2px solid #eee; font-size: 16px; font-weight: bold; outline: none;
-        }
+        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: 2px solid #f0f0f0; font-size: 16px; font-weight: bold; outline: none; }
+        
+        /* РАСКРАСКА ГОРОДОВ */
+        .c-kedr { color: #1e88e5; }   /* Синий */
+        .c-ost { color: #8e24aa; }    /* Фиолетовый */
+        .c-pud { color: #43a047; }    /* Зеленый */
+        .c-lush { color: #fb8c00; }   /* Оранжевый */
+        .c-kal { color: #e53935; }    /* Красный */
+        .c-kul { color: #5d4037; }    /* Коричневый */
 
-        /* Раскрашиваем варианты выбора */
-        .opt-kedr { color: #1976d2; }
-        .opt-ost { color: #7b1fa2; }
-        .opt-pud { color: #388e3c; }
-        .opt-lush { color: #fbc02d; }
-        .opt-kul { color: #e64a19; }
-        .opt-kal { color: #d32f2f; }
-
-        .price-container { 
-            background: linear-gradient(135deg, #64b5f6 0%, #2196f3 100%); 
-            color: white; padding: 15px; border-radius: 18px; text-align: center; margin-top: 20px;
-        }
-        .price-value { font-size: 30px; font-weight: 900; }
-
-        .btn { 
-            background: #ff9800; color: white; border: none; width: 100%; 
-            padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; 
-            margin-top: 15px; box-shadow: 0 4px 15px rgba(255,152,0,0.4);
-        }
-
-        .dev-box { text-align: center; margin-top: 20px; font-size: 10px; color: #aaa; }
+        .price-box { background: linear-gradient(135deg, #2196f3, #00bcd4); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-size: 28px; font-weight: 900; }
+        .btn { background: #ff9800; color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .dev { text-align: center; margin-top: 20px; font-size: 10px; color: #aaa; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="header-img"><div class="header-title">🚕 ПОПУТЧИК 2026</div></div>
+        <div class="header"><div class="header-text">🚕 ПОПУТЧИК 2026</div></div>
         <div class="content">
-            <div class="lbl-from">📍 ОТКУДА (Цветной выбор):</div>
-            <select id="f" onchange="calc()" style="border-color: #ff572222;">
-                <option class="opt-kedr">🌲 КЕДРОВЫЙ</option>
-                <option class="opt-ost">🏘️ ОСТАНИНО</option>
-                <option class="opt-pud">🏡 ПУДИНО</option>
-                <option class="opt-lush">🌾 ЛУШНИКОВО</option>
-                <option class="opt-kul">🏗️ КУЛАЦКИЙ</option>
-                <option class="opt-kal">🏠 КАЛИНИНСК</option>
-                <option class="opt-kedr">✈️ АЭРОПОРТ</option>
-                <option class="opt-lush">🍏 ДАЧИ</option>
+            <div class="lbl from-lbl">📍 ОТКУДА ПРИЕХАТЬ:</div>
+            <select id="f" onchange="calc()">
+                <option class="c-kedr">🌲 КЕДРОВЫЙ</option>
+                <option class="c-ost">🏘️ ОСТАНИНО</option>
+                <option class="c-pud">🏡 ПУДИНО</option>
+                <option class="c-lush">🌾 ЛУШНИКОВО</option>
+                <option class="c-kul">🏗️ КУЛАЦКИЙ</option>
+                <option class="c-kal">🏠 КАЛИНИНСК</option>
+                <option class="c-kedr">✈️ АЭРОПОРТ</option>
+                <option class="c-lush">🍏 ДАЧИ</option>
             </select>
             
-            <div class="lbl-to">🏁 КУДА (Цветной выбор):</div>
-            <select id="t" onchange="calc()" style="border-color: #4caf5022;">
-                <option class="opt-ost">🏘️ ОСТАНИНО</option>
-                <option class="opt-kedr">🌲 КЕДРОВЫЙ</option>
-                <option class="opt-pud">🏡 ПУДИНО</option>
-                <option class="opt-lush">🌾 ЛУШНИКОВО</option>
-                <option class="opt-kul">🏗️ КУЛАЦКИЙ</option>
-                <option class="opt-kal">🏠 КАЛИНИНСК</option>
-                <option class="opt-kedr">✈️ АЭРОПОРТ</option>
-                <option class="opt-lush">🍏 ДАЧИ</option>
+            <div class="lbl to-lbl">🏁 КУДА ЕДЕМ:</div>
+            <select id="t" onchange="calc()">
+                <option class="c-ost">🏘️ ОСТАНИНО</option>
+                <option class="c-kedr">🌲 КЕДРОВЫЙ</option>
+                <option class="c-pud">🏡 ПУДИНО</option>
+                <option class="c-lush">🌾 ЛУШНИКОВО</option>
+                <option class="c-kul">🏗️ КУЛАЦКИЙ</option>
+                <option class="c-kal">🏠 КАЛИНИНСК</option>
+                <option class="c-kedr">✈️ АЭРОПОРТ</option>
+                <option class="c-lush">🍏 ДАЧИ</option>
             </select>
             
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <div style="flex:1;"><label style="font-size:10px; font-weight:bold;">📅 ДАТА</label><select id="date_select" onchange="calc()"></select></div>
-                <div style="flex:1;"><label style="font-size:10px; font-weight:bold;">⏰ ВРЕМЯ</label><input type="time" id="tm" value="12:00" onchange="calc()"></div>
+                <div style="flex:1.2"><label class="lbl">📅 ДАТА</label><select id="ds" onchange="calc()"></select></div>
+                <div style="flex:0.8"><label class="lbl">⏰ ВРЕМЯ</label><input type="time" id="tm" value="12:00" onchange="calc()"></div>
             </div>
 
-            <div class="price-container">
-                <div style="font-size:12px; font-weight:bold; opacity:0.9;">ИТОГО К ОПЛАТЕ:</div>
-                <div class="price-value" id="total">300р</div>
-            </div>
-
-            <button class="btn" onclick="send()">🔥 ЗАБРОНИРОВАТЬ</button>
-            <div class="dev-box">РАЗРАБОТКА:<br><b>КОЛОГРИВОВ ЕВГЕНИЙ ЕВГЕНЬЕВИЧ И GEMINI</b></div>
+            <div class="price-box" id="pr">300р</div>
+            <button class="btn" onclick="send()">ПОДТВЕРДИТЬ</button>
+            <div class="dev">РАЗРАБОТКА:<br><b>КОЛОГРИВОВ ЕВГЕНИЙ ЕВГЕНЬЕВИЧ И GEMINI</b></div>
         </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        
-        const PRICES = {
+
+        const P = {
             "🌲 КЕДРОВЫЙ-🏘️ ОСТАНИНО": 300, "🏘️ ОСТАНИНО-🌲 КЕДРОВЫЙ": 300,
             "🌲 КЕДРОВЫЙ-🏡 ПУДИНО": 350, "🏡 ПУДИНО-🌲 КЕДРОВЫЙ": 350,
             "🌲 КЕДРОВЫЙ-🌾 ЛУШНИКОВО": 400, "🌾 ЛУШНИКОВО-🌲 КЕДРОВЫЙ": 400,
@@ -111,38 +87,32 @@
             "🏡 ПУДИНО-🏠 КАЛИНИНСК": 400, "🏠 КАЛИНИНСК-🏡 ПУДИНО": 400
         };
 
-        function fillDates() {
-            const s = document.getElementById('date_select');
-            for (let i = 0; i < 3; i++) {
-                let d = new Date(); d.setDate(d.getDate() + i);
-                let txt = (i===0?"Сегодня ":(i===1?"Завтра ":"")) + d.toLocaleDateString('ru-RU',{month:'short',day:'numeric'});
-                s.add(new Option(txt, d.toLocaleDateString('ru-RU')));
+        function fill() {
+            const s = document.getElementById('ds');
+            for(let i=0; i<3; i++) {
+                let d = new Date(); d.setDate(d.getDate()+i);
+                let t = (i===0?"Сегодня ":(i===1?"Завтра ":"")) + d.toLocaleDateString('ru-RU',{month:'short',day:'numeric'});
+                s.add(new Option(t, d.toLocaleDateString('ru-RU')));
             }
         }
 
         function calc() {
-            let f = document.getElementById('f').value;
-            let t = document.getElementById('t').value;
-            let tm = document.getElementById('tm').value;
-            let key = f + "-" + t;
-            let base = PRICES[key] || 400;
-            let h = parseInt(tm.split(':')[0]);
-            let m = parseInt(tm.split(':')[1]);
-            let isNight = (h >= 22 || h < 8 || (h === 8 && m <= 8));
-            if (isNight) base *= 2;
-            document.getElementById('total').innerText = base + "р" + (isNight ? " 🌙" : " ☀️");
+            let f = document.getElementById('f').value, t = document.getElementById('t').value, tm = document.getElementById('tm').value;
+            let b = P[f+"-"+t] || 400;
+            let h = parseInt(tm.split(':')[0]), m = parseInt(tm.split(':')[1]);
+            let n = (h >= 22 || h < 8 || (h === 8 && m <= 8));
+            if(n) b *= 2;
+            document.getElementById('pr').innerText = b + "р" + (n ? " 🌙" : " ☀️");
         }
 
         function send() {
             tg.sendData(JSON.stringify({
-                from: document.getElementById('f').value,
-                to: document.getElementById('t').value,
-                date: document.getElementById('date_select').value,
-                time: document.getElementById('tm').value,
-                price: document.getElementById('total').innerText
+                from: document.getElementById('f').value, to: document.getElementById('t').value,
+                date: document.getElementById('ds').value, time: document.getElementById('tm').value,
+                price: document.getElementById('pr').innerText
             }));
         }
-        fillDates(); calc();
+        fill(); calc();
     </script>
 </body>
 </html>
